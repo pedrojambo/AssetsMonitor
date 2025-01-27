@@ -5,6 +5,6 @@ namespace AssetsMonitor.Interfaces
 {
     public interface IAssetService
     {
-        Task<AssetDto> GetAssetQuoteAsync(string symbol);
+        Task<GlobalQuote> GetAssetQuoteAsync(string symbol);
     }
 }
