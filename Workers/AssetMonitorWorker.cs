@@ -14,17 +14,15 @@ namespace AssetsMonitor.Workers
         private readonly IAssetService _assetService;
         private readonly IEmailSenderService _emailSenderService;
         private readonly string _assetSymbol;
-        private readonly AlertSettings _alertSettings;
         private readonly decimal _sellPrice;
         private readonly decimal _buyPrice;
         private readonly ILogger<AssetMonitorWorker> _logger;
 
-        public AssetMonitorWorker(IAssetService assetService, IEmailSenderService emailSenderService, AlertSettings alertSettings, string assetSymbol, decimal sellPrice, decimal buyPrice, ILogger<AssetMonitorWorker> logger)
+        public AssetMonitorWorker(IAssetService assetService, IEmailSenderService emailSenderService, string assetSymbol, decimal sellPrice, decimal buyPrice, ILogger<AssetMonitorWorker> logger)
         {
             _assetService = assetService;
             _emailSenderService = emailSenderService;
             _assetSymbol = assetSymbol;
-            _alertSettings = alertSettings;
             _sellPrice = sellPrice;
             _buyPrice = buyPrice;
             _logger = logger;
@@ -44,16 +42,16 @@ namespace AssetsMonitor.Workers
                     if (asset.Price >= _sellPrice)
                     {
                         _logger.LogInformation("Preço do ativo {AssetSymbol} atingiu o preço de venda: {Price}", _assetSymbol, asset.Price);
-                        await _emailSenderService.SendEmailAsync(_alertSettings.RecipientEmail, "Sell Alert", $"The price of {asset.Symbol} is now {asset.Price}. Consider selling.");
+                        await _emailSenderService.SendAlertEmailAsync($"Alerta de Venda: {_assetSymbol}", _assetSymbol, asset.Price, "Venda");
                     }
                     else if (asset.Price <= _buyPrice)
                     {
                         _logger.LogInformation("Preço do ativo {AssetSymbol} atingiu o preço de compra: {Price}", _assetSymbol, asset.Price);
-                        await _emailSenderService.SendEmailAsync(_alertSettings.RecipientEmail, "Buy Alert", $"The price of {asset.Symbol} is now {asset.Price}. Consider buying.");
+                        await _emailSenderService.SendAlertEmailAsync($"Alerta de Compra: {_assetSymbol}", _assetSymbol, asset.Price, "Compra");
                     }
                     else
                     {
-                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {Price}", _assetSymbol, asset.Price);
+                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {sellPrice} - {buyPrice}", _sellPrice, _buyPrice);
                     }
                 }
                 catch (Exception ex)

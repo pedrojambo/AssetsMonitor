@@ -19,13 +19,17 @@ if (args.Length == 3)
         Console.WriteLine("Invalid price values.");
         return;
     }
+    else
+    {
+        Console.WriteLine($"Monitoring {symbol} with sell price of {sellPrice} and buy price of {buyPrice}");
+    }
 }
 else
 {
     Console.WriteLine("Usage: stock-quote-alert.exe <symbol> <sellPrice> <buyPrice>");
     symbol = "PETR4";
-    buyPrice = 22.59M;
-    sellPrice = 23.62M;
+    buyPrice = 36.59M;
+    sellPrice = 37.62M;
 }
 
 // Add services to the container.
@@ -53,7 +57,6 @@ builder.Services.AddHttpClient<IAlphaVantageApi, AlphaVantageApi>();
 builder.Services.AddHostedService(sp => new AssetMonitorWorker(
     sp.GetRequiredService<IAssetService>(),
     sp.GetRequiredService<IEmailSenderService>(),
-    alertSettings,
     symbol,
     sellPrice,
     buyPrice,

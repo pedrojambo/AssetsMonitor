@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Alert</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f8fa;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .content h2 {
+            margin: 0 0 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .content p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .content .highlight {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4d4d;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            border-radius: 8px;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .buttons a.details {
+            background-color: #007bff;
+        }
+
+        .buttons a.details:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .buttons a.broker {
+            background-color: #28a745;
+        }
+
+        .buttons a.broker:hover {
+            background-color: #1c7430;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            background-color: #6a11cb;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Assets Monitor Alert</h1>
+            <p>Fique de olho nas melhores oportunidades do mercado financeiro!</p>
+        </div>
+        <div class="content">
+            <h2>Alerta de {{Action}}</h2>
+            <p>A cotação do ativo <span class="highlight">{{Symbol}}</span> atingiu:</p>
+            <p class="highlight">{{Price}}</p>
+            <p>Data e hora: <strong>{{Date}}</strong></p>
+            <div class="buttons">
+                <a href="https://www.alphavantage.co" class="details">Ver Mais Detalhes</a>
+                <a href="https://www.corretoraficticia.com" class="broker">Ir para a Corretora</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Este é um e-mail automático. Por favor, não responda.</p>
+            <p>Visite nossa corretora para mais informações: <a href="https://www.corretoraficticia.com">www.corretoraficticia.com</a></p>
+        </div>
+    </div>
+</body>
+</html>

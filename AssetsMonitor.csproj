@@ -14,4 +14,11 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="Templates\AlertEmailTemplate.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
 </Project>

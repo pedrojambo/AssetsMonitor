@@ -2,6 +2,6 @@
 {
     public interface IEmailSenderService
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task SendAlertEmailAsync(string subject, string symbol, decimal price, string action);
     }
 }
