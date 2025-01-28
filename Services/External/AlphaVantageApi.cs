@@ -23,36 +23,36 @@ namespace AssetsMonitor.Services
 
         public async Task<string> GetGlobalQuoteAsync(string symbol)
         {
-            _logger.LogInformation("Iniciando a consulta à API Alpha Vantage para a função GLOBAL_QUOTE e o ativo {Symbol}", symbol);
+            _logger.LogInformation("Iniciando consulta a API Alpha Vantage para a funcao GLOBAL_QUOTE e o ativo {Symbol}", symbol);
 
             try
             {
                 var response = await _httpClient.GetStringAsync($"{_apiSettings.BaseUrl}?function=GLOBAL_QUOTE&symbol={symbol}.{_apiSettings.RegionalSufix}&apikey={_apiSettings.ApiKey}");
-                _logger.LogInformation("Resposta recebida da API para a função GLOBAL_QUOTE e o ativo {Symbol}: \n\n{Response}\n\n", symbol, response);
+                _logger.LogInformation("Resposta recebida da API para a funcao GLOBAL_QUOTE e o ativo {Symbol}: \n\n{Response}\n\n", symbol, response);
 
                 return response;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a função GLOBAL_QUOTE e o ativo {Symbol}", symbol);
+                _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a funcao GLOBAL_QUOTE e o ativo {Symbol}", symbol);
                 throw;
             }
         }
 
         public async Task<string> GetTimeSeriesDailyAsync(string symbol)
         {
-            _logger.LogInformation("Iniciando a consulta à API Alpha Vantage para a função TIME_SERIES_DAILY e o ativo {Symbol}", symbol);
+            _logger.LogInformation("Iniciando consulta a API Alpha Vantage para a funcao TIME_SERIES_DAILY e o ativo {Symbol}", symbol);
 
             try
             {
                 var response = await _httpClient.GetStringAsync($"{_apiSettings.BaseUrl}?function=TIME_SERIES_DAILY&symbol={symbol}.{_apiSettings.RegionalSufix}&apikey={_apiSettings.ApiKey}");
-                _logger.LogInformation("Resposta recebida da API para a função TIME_SERIES_DAILY e o ativo {Symbol}: \n\n{Response}\n\n", symbol, response);
+                _logger.LogInformation("Resposta recebida da API para a funcao TIME_SERIES_DAILY e o ativo {Symbol}: \n\n{Response}\n\n", symbol, response);
 
                 return response;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a função TIME_SERIES_DAILY e o ativo {Symbol}", symbol);
+                _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a funcao TIME_SERIES_DAILY e o ativo {Symbol}", symbol);
                 throw;
             }
         }

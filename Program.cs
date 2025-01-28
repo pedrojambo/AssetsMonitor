@@ -4,6 +4,8 @@ using AssetsMonitor.Interfaces;
 using AssetsMonitor.Models;
 using AssetsMonitor.Settings;
 using System.Net.Http;
+using AssetsMonitor.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,8 @@ else
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("AssetsMonitorDb"));
 
 // Load configuration
 var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
@@ -48,20 +52,25 @@ builder.Services.AddSingleton(alertSettings);
 builder.Services.AddSingleton(apiSettings);
 
 // Register services
-builder.Services.AddTransient<IAssetService, AssetService>();
+builder.Services.AddScoped<IAssetsService, AssetsService>();
 builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
 builder.Services.AddHttpClient<IAlphaVantageApi, AlphaVantageApi>();
 
 
 // Register worker
-builder.Services.AddHostedService(sp => new AssetMonitorWorker(
-    sp.GetRequiredService<IAssetService>(),
-    sp.GetRequiredService<IEmailSenderService>(),
-    symbol,
-    sellPrice,
-    buyPrice,
-    sp.GetRequiredService<ILogger<AssetMonitorWorker>>()
-));
+builder.Services.AddHostedService(sp =>
+{
+    var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+    var scope = scopeFactory.CreateScope();
+    return new AssetMonitorWorker(
+        scope.ServiceProvider.GetRequiredService<IAssetsService>(),
+        sp.GetRequiredService<IEmailSenderService>(),
+        symbol,
+        sellPrice,
+        buyPrice,
+        sp.GetRequiredService<ILogger<AssetMonitorWorker>>()
+    );
+});
 
 var app = builder.Build();
 

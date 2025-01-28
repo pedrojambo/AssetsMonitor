@@ -11,16 +11,16 @@ namespace AssetsMonitor.Workers
 {
     public class AssetMonitorWorker : BackgroundService
     {
-        private readonly IAssetService _assetService;
+        private readonly IAssetsService _assetsService;
         private readonly IEmailSenderService _emailSenderService;
         private readonly string _assetSymbol;
         private readonly decimal _sellPrice;
         private readonly decimal _buyPrice;
         private readonly ILogger<AssetMonitorWorker> _logger;
 
-        public AssetMonitorWorker(IAssetService assetService, IEmailSenderService emailSenderService, string assetSymbol, decimal sellPrice, decimal buyPrice, ILogger<AssetMonitorWorker> logger)
+        public AssetMonitorWorker(IAssetsService assetsService, IEmailSenderService emailSenderService, string assetSymbol, decimal sellPrice, decimal buyPrice, ILogger<AssetMonitorWorker> logger)
         {
-            _assetService = assetService;
+            _assetsService = assetsService;
             _emailSenderService = emailSenderService;
             _assetSymbol = assetSymbol;
             _sellPrice = sellPrice;
@@ -36,22 +36,22 @@ namespace AssetsMonitor.Workers
             {
                 try
                 {
-                    var asset = await _assetService.GetAssetQuoteAsync(_assetSymbol);
-                    _logger.LogInformation("Cotação do ativo {AssetSymbol} recebida: {Price}", _assetSymbol, asset.Price);
+                    var asset = await _assetsService.GetAssetQuoteAsync(_assetSymbol);
+                    _logger.LogInformation("Cotacao do ativo {AssetSymbol} recebida: {Price}", _assetSymbol, asset.Price);
 
                     if (asset.Price >= _sellPrice)
                     {
-                        _logger.LogInformation("Preço do ativo {AssetSymbol} atingiu o preço de venda: {Price}", _assetSymbol, asset.Price);
+                        _logger.LogInformation("Preco do ativo {AssetSymbol} atingiu o Preco de venda: {Price} > {sellPrice}", _assetSymbol, asset.Price, _sellPrice);
                         await _emailSenderService.SendAlertEmailAsync($"Alerta de Venda: {_assetSymbol}", _assetSymbol, asset.Price, "Venda");
                     }
                     else if (asset.Price <= _buyPrice)
                     {
-                        _logger.LogInformation("Preço do ativo {AssetSymbol} atingiu o preço de compra: {Price}", _assetSymbol, asset.Price);
+                        _logger.LogInformation("Preco do ativo {AssetSymbol} atingiu o Preco de compra: {Price} < {buyPrice}", _assetSymbol, asset.Price, _buyPrice);
                         await _emailSenderService.SendAlertEmailAsync($"Alerta de Compra: {_assetSymbol}", _assetSymbol, asset.Price, "Compra");
                     }
                     else
                     {
-                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {sellPrice} - {buyPrice}", _assetSymbol, _sellPrice, _buyPrice);
+                        _logger.LogInformation("Preco do ativo {AssetSymbol} esta dentro da faixa de monitoramento: {sellPrice} - {buyPrice}", _assetSymbol, _sellPrice, _buyPrice);
                     }
                 }
                 catch (Exception ex)

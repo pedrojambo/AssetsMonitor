@@ -59,11 +59,14 @@ namespace AssetsMonitor.Services
         {
             string templatePath = Path.Combine(AppContext.BaseDirectory, _alertSettings.TemplatePath);
             string emailBody = File.ReadAllText(templatePath);
+            string brokerLink = _alertSettings.BrokerLink + $"{symbol}/";
 
             emailBody = emailBody.Replace("{{Symbol}}", symbol)
                                  .Replace("{{Price}}", price.ToString("C"))
                                  .Replace("{{Date}}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"))
-                                 .Replace("{{Action}}", action);
+                                 .Replace("{{Action}}", action)
+                                 .Replace("{{DetailsLink}}", _alertSettings.DetailsLink)
+                                 .Replace("{{BrokerLink}}", brokerLink);
 
             var mailMessage = new MailMessage
             {

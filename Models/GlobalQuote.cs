@@ -5,6 +5,7 @@ namespace AssetsMonitor.Models
 {
     public class GlobalQuote
     {
+        public int Id { get; set; }
         public string Symbol { get; set; }
 
         public decimal Open { get; set; }
