@@ -27,7 +27,7 @@ namespace AssetsMonitor.Services
                 _logger.LogInformation("Resposta recebida da API para o ativo {Symbol}: \n\n{Response}\n\n", symbol, response);
 
                 var assetQuote = GlobalQuoteMapper.MapFromJson(response);
-                _logger.LogInformation("Cotação do ativo {Symbol} processada com sucesso", symbol);
+                _logger.LogInformation("Cotação do ativo {Symbol} processada com sucesso: {AssetQuote}", symbol, assetQuote.ToString());
 
                 return assetQuote;
             }

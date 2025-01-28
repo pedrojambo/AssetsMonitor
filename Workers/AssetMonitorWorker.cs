@@ -51,7 +51,7 @@ namespace AssetsMonitor.Workers
                     }
                     else
                     {
-                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {sellPrice} - {buyPrice}", _sellPrice, _buyPrice);
+                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {sellPrice} - {buyPrice}", _assetSymbol, _sellPrice, _buyPrice);
                     }
                 }
                 catch (Exception ex)
