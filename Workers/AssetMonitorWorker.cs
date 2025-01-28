@@ -51,6 +51,10 @@ namespace AssetsMonitor.Workers
                         _logger.LogInformation("Preço do ativo {AssetSymbol} atingiu o preço de compra: {Price}", _assetSymbol, asset.Price);
                         await _emailSenderService.SendEmailAsync(_alertSettings.RecipientEmail, "Buy Alert", $"The price of {asset.Symbol} is now {asset.Price}. Consider buying.");
                     }
+                    else
+                    {
+                        _logger.LogInformation("Preço do ativo {AssetSymbol} está dentro da faixa de monitoramento: {Price}", _assetSymbol, asset.Price);
+                    }
                 }
                 catch (Exception ex)
                 {

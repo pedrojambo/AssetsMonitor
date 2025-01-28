@@ -3,6 +3,7 @@ using AssetsMonitor.Services;
 using AssetsMonitor.Interfaces;
 using AssetsMonitor.Models;
 using AssetsMonitor.Settings;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,7 @@ builder.Services.AddSwaggerGen();
 // Load configuration
 var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
 var alertSettings = builder.Configuration.GetSection("AlertSettings").Get<AlertSettings>();
-var apiSettings = builder.Configuration.GetSection("ApiSettings").Get<AlphaVantageApiSettings>();
+var apiSettings = builder.Configuration.GetSection("AlphaVantageApiSettings").Get<AlphaVantageApiSettings>();
 
 // Register configuration instances
 builder.Services.AddSingleton(smtpSettings);
@@ -43,8 +44,10 @@ builder.Services.AddSingleton(alertSettings);
 builder.Services.AddSingleton(apiSettings);
 
 // Register services
-builder.Services.AddHttpClient<IAssetService, AssetService>();
+builder.Services.AddTransient<IAssetService, AssetService>();
 builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
+builder.Services.AddHttpClient<IAlphaVantageApi, AlphaVantageApi>();
+
 
 // Register worker
 builder.Services.AddHostedService(sp => new AssetMonitorWorker(

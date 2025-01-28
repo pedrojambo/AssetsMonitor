@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using AssetsMonitor.Interfaces;
-using AssetsMonitor.Models;
 using Microsoft.Extensions.Logging;
 using AssetsMonitor.Settings;
 
@@ -25,24 +24,11 @@ namespace AssetsMonitor.Services
 
             try
             {
-                var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port)
+                using (var client = ConfigureSmtpClient())
                 {
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
-                    EnableSsl = _smtpSettings.EnableSsl,
-                };
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(_smtpSettings.Username),
-                    Subject = subject,
-                    Body = message,
-                    IsBodyHtml = true,
-                };
-
-                mailMessage.To.Add(email);
-
-                await client.SendMailAsync(mailMessage);
+                    var mailMessage = CreateMailMessage(email, subject, message);
+                    await client.SendMailAsync(mailMessage);
+                }
 
                 _logger.LogInformation("Email enviado com sucesso para {Email}", email);
             }
@@ -51,6 +37,33 @@ namespace AssetsMonitor.Services
                 _logger.LogError(ex, "Erro ao enviar email para {Email}", email);
                 throw;
             }
+        }
+
+        private SmtpClient ConfigureSmtpClient()
+        {
+            var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port)
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
+                EnableSsl = _smtpSettings.EnableSsl,
+            };
+
+            _logger.LogInformation("Conexão com {Smtp} estabelecida com sucesso", _smtpSettings.Host);
+            return client;
+        }
+
+        private MailMessage CreateMailMessage(string email, string subject, string message)
+        {
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_smtpSettings.Username),
+                Subject = subject,
+                Body = message,
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(email);
+            return mailMessage;
         }
     }
 }
