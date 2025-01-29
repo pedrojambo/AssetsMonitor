@@ -7,6 +7,7 @@ using AssetsMonitor.Data;
 using AssetsMonitor.Settings;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using AssetsMonitor.Exceptions;
 
 namespace AssetsMonitor.Services
 {
@@ -49,7 +50,7 @@ namespace AssetsMonitor.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao consultar e salvar cotacao do ativo {Symbol}", symbol);
-                throw;
+                throw new ApiException("Erro ao consultar e salvar cotacao do ativo", ex);
             }
         }
 
@@ -73,7 +74,7 @@ namespace AssetsMonitor.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao consultar o historico de cotacoes do ativo {Symbol}", symbol);
-                throw;
+                throw new DatabaseException("Erro ao consultar o historico de cotacoes do ativo", ex);
             }
         }
 

@@ -5,6 +5,7 @@ using AssetsMonitor.Interfaces;
 using Microsoft.Extensions.Logging;
 using AssetsMonitor.Settings;
 using System.IO;
+using AssetsMonitor.Exceptions;
 
 namespace AssetsMonitor.Services
 {
@@ -38,7 +39,7 @@ namespace AssetsMonitor.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao enviar email para {Email}", _alertSettings.RecipientEmail);
-                throw;
+                throw new EmailException("Erro ao enviar email", ex);
             }
         }
 

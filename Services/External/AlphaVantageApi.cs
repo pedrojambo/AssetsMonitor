@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using AssetsMonitor.Models;
 using AssetsMonitor.Interfaces;
+using AssetsMonitor.Exceptions;
 
 namespace AssetsMonitor.Services
 {
@@ -35,7 +36,7 @@ namespace AssetsMonitor.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a funcao GLOBAL_QUOTE e o ativo {Symbol}", symbol);
-                throw;
+                throw new ApiException("Erro ao consultar a API Alpha Vantage", ex);
             }
         }
 
@@ -53,7 +54,7 @@ namespace AssetsMonitor.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erro ao consultar a API Alpha Vantage para a funcao TIME_SERIES_DAILY e o ativo {Symbol}", symbol);
-                throw;
+                throw new ApiException("Erro ao consultar a API Alpha Vantage", ex);
             }
         }
     }
