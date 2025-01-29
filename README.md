@@ -82,9 +82,9 @@ A aplicação também expõe um endpoint de API que pode ser acessado via HTTP, 
 ### Consultar Histórico de Cotações
 
 - **Método:** GET
-- **URL:** `https://localhost:5000/api/Assets/getHistory?symbol=<symbol>`
+- **URL:** `http://localhost:5000/api/Assets/getHistory?symbol=<symbol>`
 
 ### Exemplo
-```uri
-https://localhost:5000/api/Assets/getHistory?symbol=PETR4
+```
+http://localhost:5000/api/Assets/getHistory?symbol=PETR4
 ```
