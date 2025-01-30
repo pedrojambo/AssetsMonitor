@@ -71,9 +71,9 @@ Para compilar a aplicação, o comando `dotnet publish` pode ser usado para comp
 
 ### Exemplo
 ```
-./AssetsMonitor PETR4 37.62 36.59
+./AssetsMonitor PETR4 37,62 36,59
 ```
-Este comando iniciará a aplicação monitorando o ativo `PETR4` com um preço de venda de `37.62` e um preço de compra de `36.59`.
+Este comando iniciará a aplicação monitorando o ativo `PETR4` com um preço de venda de `37,62` e um preço de compra de `36,59`.
 
 ## Endpoints da API
 
